@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/starter.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Outseta React Popup Starter</title>
+
+    <!-- Outseta Configuration -->
+    <script>
+      var o_options = {
+        domain: "%VITE_OUTSETA_DOMAIN%",
+        monitorDom: "true", // Required for Outseta to work with React
+        load: "auth,customForm,emailList,leadCapture,nocode,profile,support,chat", // Remove chat if you don't want to load the chat widget
+        auth: {
+          // Overriding these URLs make it easier to work with Outseta in multiple environments
+          // https://go.outseta.com/support/kb/articles/xmeyJRmV/local-dev-test-and-staging-environment
+          authenticationCallbackUrl: window.location.href, // Redirect back to the current page after authentication
+          registrationConfirmationUrl: window.location.href, // Redirect back to the current page after registration
+        },
+        nocode: {
+          hideProtectedLinks: false,
+          clearQuerystring: true,
+        },
+      };
+    </script>
+
+    <!-- Outseta External Script -->
+    <script
+      src="https://cdn.outseta.com/outseta.min.js"
+      data-options="o_options"
+    ></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
