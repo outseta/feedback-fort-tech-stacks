@@ -4,7 +4,7 @@ const Header = () => {
   return (
     <header>
       <nav>
-        <a href="/">Outseta React Minimal Starter</a>
+        <a href="/">Feeback Fort</a>
 
         {/* Anonymous buttons - only shown when logged out */}
         <button

@@ -7,7 +7,10 @@ function App() {
     <>
       <Header />
       <main>
-        <h2>Welcome to Outseta React Popup Starter</h2>
+        <div>
+          <h2>Welcome to Feeback Fort</h2>
+          <p>A modern feedback collection and management system.</p>
+        </div>
         <p>
           This is a minimal starter for Outseta React with Outseta set to use
           the popup embed mode.
