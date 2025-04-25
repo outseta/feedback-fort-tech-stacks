@@ -6,20 +6,9 @@ function App() {
   return (
     <>
       <Header />
-      <main>
-        <div>
-          <h2>Welcome to Feeback Fort</h2>
-          <p>A modern feedback collection and management system.</p>
-        </div>
-        <p>
-          This is a minimal starter for Outseta React with Outseta set to use
-          the popup embed mode.
-        </p>
-        <p>
-          You can see the relevant code for the header and footer in the
-          <code>components</code> folder. And the Outseta configuration in the
-          <code>index.html</code> file.
-        </p>
+      <main className="container mx-auto max-w-5xl py-10 px-6 space-y-4">
+        <h2 className="text-2xl font-bold">Welcome to Feeback Fort</h2>
+        <p>A modern feedback collection and management system.</p>
       </main>
       <Footer />
     </>

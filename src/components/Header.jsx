@@ -1,13 +1,17 @@
 import React from "react";
+import AccountDropdown from "./AccountDropdown";
 
 const Header = () => {
   return (
-    <header>
-      <nav>
-        <a href="/">Feeback Fort</a>
+    <header className="bg-base-100 py-3">
+      <nav className="navbar mx-auto max-w-5xl flex gab-2">
+        <a className="btn btn-ghost mr-auto" href="/">
+          Feeback Fort
+        </a>
 
         {/* Anonymous buttons - only shown when logged out */}
         <button
+          className="btn btn-ghost"
           data-o-anonymous
           data-o-auth="1"
           data-mode="popup"
@@ -16,6 +20,7 @@ const Header = () => {
           Sign Up
         </button>
         <button
+          className="btn btn-ghost"
           data-o-anonymous
           data-o-auth="1"
           data-mode="popup"
@@ -24,14 +29,7 @@ const Header = () => {
           Log In
         </button>
 
-        {/* Authenticated buttons - only shown when logged in */}
-        <button data-o-authenticated data-o-profile="1" data-mode="popup">
-          <img src="[data-o-member:ProfileImageS3Url]" alt="Avatar" />
-          <span data-o-member="Email">Profile</span>
-        </button>
-        <button data-o-authenticated data-o-logout-link="1">
-          Logout
-        </button>
+        <AccountDropdown data-o-authenticated />
       </nav>
     </header>
   );

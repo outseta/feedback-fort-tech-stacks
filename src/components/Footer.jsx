@@ -1,19 +1,28 @@
+const NEWSLETTER_ID = import.meta.env.VITE_OUTSETA_NEWSLETTER_ID;
+
 const Footer = () => {
   return (
-    <footer>
-      <menu>
-        <button data-o-authenticated data-o-support="1" data-mode="popup">
-          Get help!
-        </button>
-
+    <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
+      <nav className="mx-auto max-w-5xl flex gab-2">
         <button
+          className="btn"
+          data-o-authenticated
           data-o-email-list="1"
           data-mode="popup"
-          data-email-list-uid={import.meta.env.VITE_OUTSETA_NEWSLETTER_ID}
+          data-email-list-uid={NEWSLETTER_ID}
         >
           Sign up for news!
         </button>
-      </menu>
+        <button
+          className="btn btn-secondary"
+          data-o-anonymous
+          data-o-email-list="1"
+          data-mode="popup"
+          data-email-list-uid={NEWSLETTER_ID}
+        >
+          Sign up for news!
+        </button>
+      </nav>
     </footer>
   );
 };
