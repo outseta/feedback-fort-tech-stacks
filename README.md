@@ -4,9 +4,10 @@ A modern React application built with Vite, and Outseta set to use the popup emb
 
 ## 🚀 Quick Start
 
-0. **Prerequisite**
+0. **Prerequisites**
 
    - An Outseta account set up with at least one plan and one email list.
+   - A Supabase account and project set up.
 
 1. **Install Dependencies**
 
@@ -14,7 +15,7 @@ A modern React application built with Vite, and Outseta set to use the popup emb
    npm install
    ```
 
-2. **Configure Outseta**
+2. **Configure Environment Variables**
 
    Copy the `.env.example` file to `.env`:
 
@@ -22,9 +23,12 @@ A modern React application built with Vite, and Outseta set to use the popup emb
    cp .env.example .env
    ```
 
-   Edit the `.env` file and set the `VITE_OUTSETA_DOMAIN` environment variable to your Outseta domain.
+   Edit the `.env` file and set the following variables:
 
-   And set the `VITE_OUTSETA_NEWSLETTER_ID` environment variable to the ID of the Outseta email list you want to use.
+   - `VITE_OUTSETA_DOMAIN`: Your Outseta domain
+   - `VITE_OUTSETA_NEWSLETTER_ID`: The ID of your Outseta email list
+   - `VITE_SUPABASE_URL`: Your Supabase project URL
+   - `VITE_SUPABASE_ANON_KEY`: Your Supabase anonymous key
 
 3. **Start Development Server**
 
@@ -62,6 +66,7 @@ project-root/
 ## 🔧 Technologies
 
 - [Outseta](https://outseta.com/) - Authentication, User Management, Billing, etc.
+- [Supabase](https://supabase.com/) - Backend as a Service, Database, Authentication
 - [React](https://reactjs.org/) - UI Library
 - [Vite](https://vitejs.dev/) - Build tool and development server
 - [ESLint](https://eslint.org/) - Code linting
@@ -70,6 +75,7 @@ project-root/
 
 - [Example use of intergrating Outseta with React](https://github.com/outseta/outseta-react-kitchen-sink)
 - [Outseta Knowledge Base](https://go.outseta.com/support/kb)
+- [Supabase Documentation](https://supabase.com/docs)
 
 ## 🤝 Contributing
 
