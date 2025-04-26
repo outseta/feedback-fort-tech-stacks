@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS vote (
     uid UUID PRIMARY KEY,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL,
     feedback_uid UUID NOT NULL REFERENCES feedback(uid),
-    outseta_user_uid VARCHAR NOT NULL REFERENCES outseta_user(uid),
+    outseta_person_uid VARCHAR NOT NULL REFERENCES outseta_user(person_uid),
     deleted_at TIMESTAMP WITH TIME ZONE
 );
 
@@ -23,11 +23,11 @@ CREATE POLICY "Users can view all votes"
 CREATE POLICY "Users can create votes"
     ON vote FOR INSERT
     WITH CHECK (
-        auth.jwt() ->> 'sub' = outseta_user_uid AND
+        auth.jwt() ->> 'sub' = outseta_person_uid AND
         NOT EXISTS (
             SELECT 1 FROM vote v
             WHERE v.feedback_uid = vote.feedback_uid
-            AND v.outseta_user_uid = vote.outseta_user_uid
+            AND v.outseta_person_uid = vote.outseta_person_uid
             AND v.deleted_at IS NULL
         )
     );
@@ -35,19 +35,19 @@ CREATE POLICY "Users can create votes"
 CREATE POLICY "Users can update their own votes"
     ON vote FOR UPDATE
     USING (
-        auth.jwt() ->> 'sub' = outseta_user_uid AND
+        auth.jwt() ->> 'sub' = outseta_person_uid AND
         deleted_at IS NULL
     )
     WITH CHECK (
-        auth.jwt() ->> 'sub' = outseta_user_uid AND
+        auth.jwt() ->> 'sub' = outseta_person_uid AND
         deleted_at IS NULL
     );
 
--- Only allow soft deletes
+-- Only allow soft deletes of votes, so no delete policy
 -- CREATE POLICY "Users can delete their own votes"
 --     ON vote FOR DELETE
 --     USING (
---         auth.jwt() ->> 'sub' = outseta_user_uid AND
+--         auth.jwt() ->> 'sub' = outseta_person_uid AND
 --         deleted_at IS NULL
 --     );
 
@@ -95,4 +95,4 @@ AFTER INSERT OR UPDATE OR DELETE ON vote
 FOR EACH ROW EXECUTE FUNCTION update_feedback_votes();
 
 -- Add unique constraint to prevent multiple active votes from same user
-CREATE UNIQUE INDEX unique_active_user_vote ON vote (feedback_uid, outseta_user_uid) WHERE deleted_at IS NULL;
+CREATE UNIQUE INDEX unique_active_user_vote ON vote (feedback_uid, outseta_person_uid) WHERE deleted_at IS NULL;
