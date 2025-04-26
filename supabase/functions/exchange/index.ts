@@ -5,6 +5,7 @@
 // command: supabase functions deploy exchange --no-verify-jwt
 
 import * as jose from "https://deno.land/x/jose@v4.14.4/index.ts";
+import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -22,9 +23,6 @@ Deno.serve(async (req) => {
   const authHeader = req.headers.get("Authorization");
   const outsetaJwtAccessToken = authHeader?.split(" ")[1] || "";
 
-  console.log("outsetaJwtAccessToken", outsetaJwtAccessToken);
-  console.log("Deno.env.get('OUTSETA_DOMAIN')", Deno.env.get("OUTSETA_DOMAIN"));
-
   try {
     const JWKS = jose.createRemoteJWKSet(
       new URL(`https://${Deno.env.get("OUTSETA_DOMAIN")}/.well-known/jwks`)
@@ -33,32 +31,45 @@ Deno.serve(async (req) => {
     // Use the JSON Web Key (JWK) to verify the token
     const { payload } = await jose.jwtVerify(outsetaJwtAccessToken, JWKS);
 
-    console.log("JWT is valid");
-
     // Update the JWT for Supabase and sign with the Supabase secret
     payload.role = "authenticated";
 
     const supabaseEncodedJwtSecret = new TextEncoder().encode(
       Deno.env.get("SUPA_JWT_SECRET")
     );
-    const jwtAlg = "HS256";
 
-    const supabaseJwt = await new jose.SignJWT(payload)
-      .setProtectedHeader({ alg: jwtAlg, typ: "JWT" })
+    const supabaseAccessToken = await new jose.SignJWT(payload)
+      .setProtectedHeader({ alg: "HS256", typ: "JWT" })
       .setIssuer("supabase")
       .setIssuedAt(payload.iat)
       .setExpirationTime(payload.exp || "")
       .sign(supabaseEncodedJwtSecret);
 
+     // Upsert User in Supabase
+    const supabaseClient = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_ANON_KEY") ?? "", {
+        accessToken: (token) => supabaseAccessToken || token,
+      }
+    );
+
+    const { error } = await supabaseClient
+      .from("outseta_user")
+      .upsert({
+        avatar_src: `https://api.dicebear.com/7.x/initials/svg?seed=${payload.name || payload.sub}`,
+      });
+
+    if (error) {
+      throw error;
+    }
+
     // Respond with the new Supabase JWT
-    return new Response(JSON.stringify({ supabaseJwt }), {
+    return new Response(JSON.stringify({ supabaseAccessToken }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
   } catch (error) {
-    console.error(error.message, {
-      outsetaJwtAccessToken,
-    });
+    console.error(error.message);
 
     return new Response(JSON.stringify({ error: "Invalid" }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
