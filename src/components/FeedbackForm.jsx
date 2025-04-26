@@ -3,8 +3,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../lib/supabase";
 
 const FeedbackForm = ({ className }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
@@ -18,21 +16,28 @@ const FeedbackForm = ({ className }) => {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (props) => {
       queryClient.invalidateQueries({ queryKey: ["feedback"] });
-      setTitle("");
-      setDescription("");
+    },
+    onError: (error) => {
+      console.error("error", error);
     },
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    mutate({
-      title,
-      description,
-      status: "requested",
-      upvotes: 0,
-    });
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    mutate(
+      {
+        title: formData.get("title"),
+        description: formData.get("description"),
+      },
+      {
+        onSuccess: () => {
+          event.target.reset();
+        },
+      }
+    );
   };
 
   return (
@@ -50,10 +55,9 @@ const FeedbackForm = ({ className }) => {
           </label>
           <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
             className="input input-bordered w-full"
             placeholder="Enter a descriptive title"
+            name="title"
             required
           />
         </div>
@@ -62,10 +66,9 @@ const FeedbackForm = ({ className }) => {
             <span className="label-text">Description</span>
           </label>
           <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
             className="textarea textarea-bordered h-24 w-full"
             placeholder="Describe your feedback in detail"
+            name="description"
             required
           />
         </div>
