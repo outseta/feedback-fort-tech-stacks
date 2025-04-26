@@ -11,6 +11,23 @@ const fetchFeedback = async () => {
   return data;
 };
 
+const getStatusColor = (status) => {
+  switch (status) {
+    case "requested":
+      return "badge-primary";
+    case "planned":
+      return "badge-info";
+    case "in_progress":
+      return "badge-warning";
+    case "completed":
+      return "badge-success";
+    case "rejected":
+      return "badge-error";
+    default:
+      return "badge-ghost";
+  }
+};
+
 const FeedbackList = ({ className }) => {
   const {
     data: feedback,
@@ -44,7 +61,11 @@ const FeedbackList = ({ className }) => {
             <h2 className="card-title">{item.title}</h2>
             <p>{item.description}</p>
             <div className="card-actions justify-between items-center mt-4">
-              <div className="badge badge-primary">{item.status}</div>
+              <div
+                className={`badge badge-soft ${getStatusColor(item.status)}`}
+              >
+                {item.status.replace("_", " ")}
+              </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm">👍 {item.upvotes}</span>
               </div>
