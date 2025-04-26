@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../lib/supabase";
+import StatusBadge from "./StatusBadge";
 
 const fetchFeedback = async () => {
   const { data, error } = await supabase
@@ -9,23 +10,6 @@ const fetchFeedback = async () => {
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data;
-};
-
-const getStatusColor = (status) => {
-  switch (status) {
-    case "requested":
-      return "badge-primary";
-    case "planned":
-      return "badge-info";
-    case "in_progress":
-      return "badge-warning";
-    case "completed":
-      return "badge-success";
-    case "rejected":
-      return "badge-error";
-    default:
-      return "badge-ghost";
-  }
 };
 
 const FeedbackList = ({ className }) => {
@@ -66,26 +50,18 @@ const FeedbackList = ({ className }) => {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">
+    <div className="space-y-8">
+      <menu className="flex flex-wrap gap-2 justify-center">
         {statuses.map((status) => (
-          <button
+          <StatusBadge
             key={status}
+            status={status}
             onClick={() => setSelectedStatus(status)}
-            className={`badge badge-lg cursor-pointer transition-all ${
-              status === "all"
-                ? selectedStatus === "all"
-                  ? "badge-primary"
-                  : "badge-ghost"
-                : `badge-soft ${getStatusColor(
-                    status
-                  )} hover:badge-outline active:badge`
-            }`}
-          >
-            {status === "all" ? "All" : status.replace("_", " ")}
-          </button>
+            isSelected={selectedStatus === status}
+            element="button"
+          />
         ))}
-      </div>
+      </menu>
       <div
         className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ${className}`}
       >
@@ -95,11 +71,10 @@ const FeedbackList = ({ className }) => {
               <h2 className="card-title">{item.title}</h2>
               <p>{item.description}</p>
               <div className="card-actions justify-between items-center mt-4">
-                <div
-                  className={`badge badge-soft ${getStatusColor(item.status)}`}
-                >
-                  {item.status.replace("_", " ")}
-                </div>
+                <StatusBadge
+                  onClick={() => setSelectedStatus(item.status)}
+                  status={item.status}
+                />
                 <div className="flex items-center gap-2">
                   <span className="text-sm">👍 {item.upvotes}</span>
                 </div>
