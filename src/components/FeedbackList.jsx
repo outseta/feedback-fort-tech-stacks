@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../lib/supabase";
 
@@ -29,6 +29,7 @@ const getStatusColor = (status) => {
 };
 
 const FeedbackList = ({ className }) => {
+  const [selectedStatus, setSelectedStatus] = useState("all");
   const {
     data: feedback,
     isLoading,
@@ -38,6 +39,19 @@ const FeedbackList = ({ className }) => {
     queryKey: ["feedback"],
     queryFn: fetchFeedback,
   });
+
+  const statuses = [
+    "all",
+    "requested",
+    "planned",
+    "in_progress",
+    "completed",
+    "rejected",
+  ];
+
+  const filteredFeedback = feedback?.filter((item) =>
+    selectedStatus === "all" ? true : item.status === selectedStatus
+  );
 
   if (isLoading) {
     return (
@@ -52,27 +66,48 @@ const FeedbackList = ({ className }) => {
   }
 
   return (
-    <div
-      className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ${className} `}
-    >
-      {feedback.map((item) => (
-        <div key={item.uid} className="card bg-base-100 shadow-sm">
-          <div className="card-body">
-            <h2 className="card-title">{item.title}</h2>
-            <p>{item.description}</p>
-            <div className="card-actions justify-between items-center mt-4">
-              <div
-                className={`badge badge-soft ${getStatusColor(item.status)}`}
-              >
-                {item.status.replace("_", " ")}
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm">👍 {item.upvotes}</span>
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        {statuses.map((status) => (
+          <button
+            key={status}
+            onClick={() => setSelectedStatus(status)}
+            className={`badge badge-lg cursor-pointer transition-all ${
+              status === "all"
+                ? selectedStatus === "all"
+                  ? "badge-primary"
+                  : "badge-ghost"
+                : `badge-soft ${getStatusColor(
+                    status
+                  )} hover:badge-outline active:badge`
+            }`}
+          >
+            {status === "all" ? "All" : status.replace("_", " ")}
+          </button>
+        ))}
+      </div>
+      <div
+        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ${className}`}
+      >
+        {filteredFeedback.map((item) => (
+          <div key={item.uid} className="card bg-base-100 shadow-sm">
+            <div className="card-body">
+              <h2 className="card-title">{item.title}</h2>
+              <p>{item.description}</p>
+              <div className="card-actions justify-between items-center mt-4">
+                <div
+                  className={`badge badge-soft ${getStatusColor(item.status)}`}
+                >
+                  {item.status.replace("_", " ")}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">👍 {item.upvotes}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
