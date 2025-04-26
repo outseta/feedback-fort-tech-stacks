@@ -1,14 +1,20 @@
 import React from "react";
 import clsx from "clsx";
 
-const StatusBadge = ({ status, onClick, isSelected, className = "" }) => {
+const StatusBadge = ({
+  status,
+  onClick,
+  isSelected,
+  className = "",
+  count,
+}) => {
   const Element = onClick ? "button" : "div";
   const isButton = Element === "button";
   return (
     <Element
       {...(Element === "button" && { onClick })}
       className={clsx(
-        "badge transition-all",
+        "badge transition-all gap-1 capitalize",
         { "badge-soft": !isButton || (isButton && !isSelected) },
         { "badge-success": status === "completed" },
         { "badge-primary": status === "requested" },
@@ -21,7 +27,10 @@ const StatusBadge = ({ status, onClick, isSelected, className = "" }) => {
         className
       )}
     >
-      {status === "all" ? "All" : status.replace("_", " ")}
+      {status.replace("_", " ")}
+      {count !== undefined && (
+        <span className="text-xs opacity-75">({count})</span>
+      )}
     </Element>
   );
 };

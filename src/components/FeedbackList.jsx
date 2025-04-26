@@ -33,6 +33,12 @@ const FeedbackList = ({ className }) => {
     "rejected",
   ];
 
+  const getStatusCount = (status) => {
+    if (!feedback) return 0;
+    if (status === "all") return feedback.length;
+    return feedback.filter((item) => item.status === status).length;
+  };
+
   const filteredFeedback = feedback?.filter((item) =>
     selectedStatus === "all" ? true : item.status === selectedStatus
   );
@@ -58,7 +64,7 @@ const FeedbackList = ({ className }) => {
             status={status}
             onClick={() => setSelectedStatus(status)}
             isSelected={selectedStatus === status}
-            element="button"
+            count={getStatusCount(status)}
           />
         ))}
       </menu>
