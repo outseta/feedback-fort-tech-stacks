@@ -1,36 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../lib/supabase";
 
+const fetchFeedback = async () => {
+  const { data, error } = await supabase
+    .from("feedback")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data;
+};
+
 const FeedbackList = () => {
-  const [feedback, setFeedback] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    data: feedback,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["feedback"],
+    queryFn: fetchFeedback,
+  });
 
-  useEffect(() => {
-    const fetchFeedback = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("feedback")
-          .select("*")
-          .order("created_at", { ascending: false });
-
-        if (error) throw error;
-        setFeedback(data);
-      } catch (error) {
-        console.error("Error fetching feedback:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFeedback();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
+  }
+
+  if (isError) {
+    return <div className="text-error">Error: {error.message}</div>;
   }
 
   return (
