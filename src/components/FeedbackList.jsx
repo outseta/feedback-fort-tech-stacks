@@ -11,7 +11,7 @@ const fetchFeedback = async () => {
   return data;
 };
 
-const FeedbackList = () => {
+const FeedbackList = ({ className }) => {
   const {
     data: feedback,
     isLoading,
@@ -35,7 +35,9 @@ const FeedbackList = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div
+      className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ${className} `}
+    >
       {feedback.map((item) => (
         <div key={item.uid} className="card bg-base-100 shadow-sm">
           <div className="card-body">

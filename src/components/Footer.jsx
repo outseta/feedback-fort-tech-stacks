@@ -1,8 +1,8 @@
 const NEWSLETTER_ID = import.meta.env.VITE_OUTSETA_NEWSLETTER_ID;
 
-const Footer = () => {
+const Footer = ({ className }) => {
   return (
-    <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
+    <footer className={`footer sm:footer-horizontal ${className}`}>
       <nav className="mx-auto max-w-5xl flex gab-2">
         <button
           className="btn"

@@ -2,17 +2,21 @@ import React from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import FeedbackList from "./components/FeedbackList";
+import FeedbackForm from "./components/FeedbackForm";
 
 function App() {
   return (
     <>
       <Header />
-      <main className="container mx-auto max-w-5xl py-10 px-6 space-y-4">
-        <h2 className="text-2xl font-bold">Welcome to Feeback Fort</h2>
-        <p>A modern feedback collection and management system.</p>
-        <FeedbackList />
+      <main>
+        <section className="py-16">
+          <FeedbackList className="max-w-5xl mx-auto" />
+        </section>
+        <section className="bg-base-200 py-24">
+          <FeedbackForm className="max-w-3xl mx-auto" />
+        </section>
       </main>
-      <Footer />
+      <Footer className="bg-base-300 text-base-content p-10" />
     </>
   );
 }
