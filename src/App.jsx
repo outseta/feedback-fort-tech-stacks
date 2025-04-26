@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "./components/Header";
+import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FeedbackList from "./components/FeedbackList";
 import FeedbackForm from "./components/FeedbackForm";
@@ -7,12 +7,14 @@ import FeedbackForm from "./components/FeedbackForm";
 function App() {
   return (
     <>
-      <Header />
+      <header className="bg-base-200 shadow-sm">
+        <Navbar className="max-w-5xl mx-auto" />
+      </header>
       <main>
-        <section className="py-16">
+        <section className="py-16 px-4">
           <FeedbackList className="max-w-5xl mx-auto" />
         </section>
-        <section className="bg-base-200 py-24">
+        <section className="bg-base-200 sm:py-12 py-16 px-4">
           <FeedbackForm className="max-w-3xl mx-auto" />
         </section>
       </main>
