@@ -17,10 +17,8 @@ DROP POLICY IF EXISTS "Users can update their own votes" ON vote;
 
 -- Create policies
 CREATE POLICY "Users can view their own votes"
-    ON vote FOR SELECT
-    USING (
-        auth.jwt() ->> 'sub' = outseta_person_uid
-    );
+  ON vote FOR SELECT
+  USING (true);
 
 CREATE POLICY "Users can create votes"
     ON vote FOR INSERT
@@ -47,48 +45,24 @@ CREATE POLICY "Users can update their own votes"
 --         deleted_at IS NULL
 --     );
 
--- Create function to update vote counts
-CREATE OR REPLACE FUNCTION update_feedback_votes()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF TG_OP = 'INSERT' THEN
-        UPDATE feedback
-        SET upvotes = (
-            SELECT COUNT(*)
-            FROM vote
-            WHERE feedback_uid = NEW.feedback_uid
-            AND deleted_at IS NULL
-        )
-        WHERE uid = NEW.feedback_uid;
-    ELSIF TG_OP = 'UPDATE' THEN
-        IF OLD.deleted_at IS NULL AND NEW.deleted_at IS NOT NULL THEN
-            -- Vote was soft deleted
-            UPDATE feedback
-            SET upvotes = upvotes - 1
-            WHERE uid = NEW.feedback_uid;
-        ELSIF OLD.deleted_at IS NOT NULL AND NEW.deleted_at IS NULL THEN
-            -- Vote was restored
-            UPDATE feedback
-            SET upvotes = upvotes + 1
-            WHERE uid = NEW.feedback_uid;
-        END IF;
-    ELSIF TG_OP = 'DELETE' THEN
-        IF OLD.deleted_at IS NULL THEN
-            -- Only count if the vote wasn't already soft deleted
-            UPDATE feedback
-            SET upvotes = upvotes - 1
-            WHERE uid = OLD.feedback_uid;
-        END IF;
-    END IF;
-    RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
--- Create trigger for vote counting
-DROP TRIGGER IF EXISTS update_feedback_votes_trigger ON vote;
-CREATE TRIGGER update_feedback_votes_trigger
-AFTER INSERT OR UPDATE OR DELETE ON vote
-FOR EACH ROW EXECUTE FUNCTION update_feedback_votes();
-
 -- Add unique constraint to prevent multiple active votes from same user
 CREATE UNIQUE INDEX unique_active_user_vote ON vote (feedback_uid, outseta_person_uid) WHERE deleted_at IS NULL;
+
+-- Create a view to show feedback with calculated upvotes and the current user's vote id
+CREATE OR REPLACE VIEW feedback_with_votes AS
+SELECT
+  f.*,
+  (
+    SELECT COUNT(*)
+    FROM vote v
+    WHERE v.feedback_uid = f.uid AND v.deleted_at IS NULL
+  ) AS upvotes,
+  (
+    SELECT v.uid
+    FROM vote v
+    WHERE v.feedback_uid = f.uid
+      AND v.outseta_person_uid = auth.jwt() ->> 'sub'
+      AND v.deleted_at IS NULL
+    LIMIT 1
+  ) AS user_vote_id
+FROM feedback f;

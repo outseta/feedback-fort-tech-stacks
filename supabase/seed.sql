@@ -1,10 +1,10 @@
 -- Seed feedback
-INSERT INTO feedback (uid, created_at, description, status, title, outseta_person_uid, upvotes) VALUES
-    ('00000000-0000-0000-0000-000000000001', NOW(), 'The new feature is great but could use some improvements in the UI', 'requested', 'Improve UI for new feature', 'usr_123', 2),
-    ('00000000-0000-0000-0000-000000000002', NOW(), 'Would love to see dark mode support', 'planned', 'Add dark mode', 'usr_456', 5),
-    ('00000000-0000-0000-0000-000000000003', NOW(), 'The app crashes when uploading large files', 'in_progress', 'Fix file upload crash', 'usr_789', 3),
-    ('00000000-0000-0000-0000-000000000004', NOW(), 'Add support for more file formats', 'completed', 'Additional file format support', 'usr_123', 1),
-    ('00000000-0000-0000-0000-000000000005', NOW(), 'The search function is not working as expected', 'requested', 'Search functionality issues', 'usr_456', 4);
+INSERT INTO feedback (uid, created_at, description, status, title, outseta_person_uid) VALUES
+    ('00000000-0000-0000-0000-000000000001', NOW(), 'The new feature is great but could use some improvements in the UI', 'requested', 'Improve UI for new feature', 'usr_123'),
+    ('00000000-0000-0000-0000-000000000002', NOW(), 'Would love to see dark mode support', 'planned', 'Add dark mode', 'usr_456'),
+    ('00000000-0000-0000-0000-000000000003', NOW(), 'The app crashes when uploading large files', 'in_progress', 'Fix file upload crash', 'usr_789'),
+    ('00000000-0000-0000-0000-000000000004', NOW(), 'Add support for more file formats', 'completed', 'Additional file format support', 'usr_123'),
+    ('00000000-0000-0000-0000-000000000005', NOW(), 'The search function is not working as expected', 'requested', 'Search functionality issues', 'usr_456');
 
 -- Seed votes
 INSERT INTO vote (uid, created_at, feedback_uid, outseta_person_uid) VALUES
