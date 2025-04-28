@@ -1,7 +1,7 @@
 -- Create vote table
 CREATE TABLE IF NOT EXISTS vote (
-    uid UUID PRIMARY KEY,
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     feedback_uid UUID NOT NULL REFERENCES feedback(uid),
     outseta_person_uid VARCHAR NOT NULL DEFAULT auth.jwt() ->> 'sub',
     deleted_at TIMESTAMP WITH TIME ZONE
@@ -11,14 +11,16 @@ CREATE TABLE IF NOT EXISTS vote (
 ALTER TABLE vote ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies if they exist
-DROP POLICY IF EXISTS "Users can view all votes" ON vote;
+DROP POLICY IF EXISTS "Users can view their own votes" ON vote;
 DROP POLICY IF EXISTS "Users can create votes" ON vote;
 DROP POLICY IF EXISTS "Users can update their own votes" ON vote;
 
 -- Create policies
-CREATE POLICY "Users can view all votes"
+CREATE POLICY "Users can view their own votes"
     ON vote FOR SELECT
-    USING (true);
+    USING (
+        auth.jwt() ->> 'sub' = outseta_person_uid
+    );
 
 CREATE POLICY "Users can create votes"
     ON vote FOR INSERT
@@ -34,14 +36,8 @@ CREATE POLICY "Users can create votes"
 
 CREATE POLICY "Users can update their own votes"
     ON vote FOR UPDATE
-    USING (
-        auth.jwt() ->> 'sub' = outseta_person_uid AND
-        deleted_at IS NULL
-    )
-    WITH CHECK (
-        auth.jwt() ->> 'sub' = outseta_person_uid AND
-        deleted_at IS NULL
-    );
+    USING (auth.jwt() ->> 'sub' = outseta_person_uid)
+    WITH CHECK (auth.jwt() ->> 'sub' = outseta_person_uid);
 
 -- Only allow soft deletes of votes, so no delete policy
 -- CREATE POLICY "Users can delete their own votes"

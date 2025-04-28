@@ -1,19 +1,32 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../lib/supabase";
-import StatusBadge from "./StatusBadge";
+import StatusBadge, { STATUS_OPTIONS } from "./StatusBadge";
+import VoteButton from "./VoteButton";
 
 const fetchFeedback = async () => {
-  const { data, error } = await supabase
+  const { data: feedback, error: feedbackError } = await supabase
     .from("feedback")
     .select("*")
     .order("created_at", { ascending: true });
-  if (error) throw error;
-  return data;
+  if (feedbackError) throw feedbackError;
+
+  const { data: votes, error: votesError } = await supabase
+    .from("vote")
+    .select("*")
+    .is("deleted_at", null);
+  if (votesError) throw votesError;
+
+  // Add hasVoted flag to each feedback item
+  return feedback.map((item) => ({
+    ...item,
+    activeUserVote: votes.find((vote) => vote.feedback_uid === item.uid),
+  }));
 };
 
-const FeedbackList = ({ className }) => {
+const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
   const [selectedStatus, setSelectedStatus] = useState("all");
+
   const {
     data: feedback,
     isLoading,
@@ -22,16 +35,10 @@ const FeedbackList = ({ className }) => {
   } = useQuery({
     queryKey: ["feedback"],
     queryFn: fetchFeedback,
+    onError: (error) => {
+      console.error(error);
+    },
   });
-
-  const statuses = [
-    "all",
-    "requested",
-    "planned",
-    "in_progress",
-    "completed",
-    "rejected",
-  ];
 
   const getStatusCount = (status) => {
     if (!feedback) return 0;
@@ -81,9 +88,11 @@ const FeedbackList = ({ className }) => {
                   onClick={() => setSelectedStatus(item.status)}
                   status={item.status}
                 />
-                <div className="flex items-center gap-2">
-                  <span className="text-sm">👍 {item.upvotes}</span>
-                </div>
+                <VoteButton
+                  feedbackUid={item.uid}
+                  upvotes={item.upvotes}
+                  activeUserVoteId={item.activeUserVote?.uid}
+                />
               </div>
             </div>
           </div>

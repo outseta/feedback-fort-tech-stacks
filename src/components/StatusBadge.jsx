@@ -1,6 +1,15 @@
 import React from "react";
 import clsx from "clsx";
 
+export const STATUS_OPTIONS = [
+  "all",
+  "requested",
+  "planned",
+  "in_progress",
+  "completed",
+  "rejected",
+];
+
 const StatusBadge = ({
   status,
   onClick,
