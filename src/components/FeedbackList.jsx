@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "../lib/supabase";
 import StatusBadge, { STATUS_OPTIONS } from "./StatusBadge";
 import VoteButton from "./VoteButton";
+import { listFeedbackWithVotes } from "../data/feedback";
 
 const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
   const [selectedStatus, setSelectedStatus] = useState("all");
@@ -14,14 +14,7 @@ const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
     error,
   } = useQuery({
     queryKey: ["feedback"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("feedback_with_votes")
-        .select("*")
-        .order("created_at", { ascending: true });
-      if (error) throw error;
-      return data;
-    },
+    queryFn: listFeedbackWithVotes,
     onError: (error) => {
       console.error(error);
     },

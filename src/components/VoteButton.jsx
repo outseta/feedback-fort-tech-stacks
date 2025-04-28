@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "../lib/supabase";
+import { addVote, deleteVote } from "../data/vote";
 
 const VoteButton = ({ feedbackUid, upvotes, userVoteId }) => {
   const queryClient = useQueryClient();
@@ -9,22 +9,9 @@ const VoteButton = ({ feedbackUid, upvotes, userVoteId }) => {
   const { mutate: vote, isPending } = useMutation({
     mutationFn: async () => {
       if (userVoteId) {
-        // Unvote by soft deleting the vote
-        const { data, error } = await supabase
-          .from("vote")
-          .update({ deleted_at: new Date().toISOString() })
-          .eq("uid", userVoteId);
-
-        if (error) throw error;
-        return data;
+        return deleteVote(userVoteId);
       } else {
-        // Create new vote
-        const { data, error } = await supabase.from("vote").insert({
-          feedback_uid: feedbackUid,
-        });
-
-        if (error) throw error;
-        return data;
+        return addVote(feedbackUid);
       }
     },
     onSuccess: (data) => {

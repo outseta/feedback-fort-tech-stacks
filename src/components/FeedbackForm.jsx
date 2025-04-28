@@ -1,29 +1,16 @@
 import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "../lib/supabase";
+import { createFeedback } from "../data/feedback";
+import { addVote } from "../data/vote";
 
 const FeedbackForm = ({ className }) => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (newFeedback) => {
-      // First create the feedback
-      const { data: feedbackData, error: feedbackError } = await supabase
-        .from("feedback")
-        .insert(newFeedback)
-        .select()
-        .single();
-
-      if (feedbackError) throw feedbackError;
-
-      // Then add a vote for the created feedback
-      const { error: voteError } = await supabase.from("vote").insert({
-        feedback_uid: feedbackData.uid,
-      });
-
-      if (voteError) throw voteError;
-
-      return feedbackData;
+      const feedback = await createFeedback(newFeedback);
+      await addVote(feedback.uid);
+      return feedback;
     },
     onSuccess: (props) => {
       queryClient.invalidateQueries({ queryKey: ["feedback"] });
