@@ -5,7 +5,6 @@
 // command: supabase functions deploy exchange --no-verify-jwt
 
 import * as jose from "https://deno.land/x/jose@v4.14.4/index.ts";
-import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -44,24 +43,6 @@ Deno.serve(async (req) => {
       .setIssuedAt(payload.iat)
       .setExpirationTime(payload.exp || "")
       .sign(supabaseEncodedJwtSecret);
-
-     // Upsert User in Supabase
-    const supabaseClient = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_ANON_KEY") ?? "", {
-        accessToken: (token) => supabaseAccessToken || token,
-      }
-    );
-
-    const { error } = await supabaseClient
-      .from("outseta_user")
-      .upsert({
-        avatar_src: `https://api.dicebear.com/7.x/initials/svg?seed=${payload.name || payload.sub}`,
-      });
-
-    if (error) {
-      throw error;
-    }
 
     // Respond with the new Supabase JWT
     return new Response(JSON.stringify({ supabaseAccessToken }), {

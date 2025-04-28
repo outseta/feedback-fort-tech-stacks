@@ -1,9 +1,3 @@
--- Seed outseta_users
-INSERT INTO outseta_user (person_uid, created_at, avatar_src) VALUES
-    ('usr_123', NOW(), 'https://api.dicebear.com/7.x/initials/svg?seed=John Doe'),
-    ('usr_456', NOW(), 'https://api.dicebear.com/7.x/initials/svg?seed=Jane Smith'),
-    ('usr_789', NOW(), 'https://api.dicebear.com/7.x/initials/svg?seed=Bob Johnson');
-
 -- Seed feedback
 INSERT INTO feedback (uid, created_at, description, status, title, outseta_person_uid, upvotes) VALUES
     ('00000000-0000-0000-0000-000000000001', NOW(), 'The new feature is great but could use some improvements in the UI', 'requested', 'Improve UI for new feature', 'usr_123', 2),

@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS vote (
     uid UUID PRIMARY KEY,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL,
     feedback_uid UUID NOT NULL REFERENCES feedback(uid),
-    outseta_person_uid VARCHAR NOT NULL REFERENCES outseta_user(person_uid),
+    outseta_person_uid VARCHAR NOT NULL DEFAULT auth.jwt() ->> 'sub',
     deleted_at TIMESTAMP WITH TIME ZONE
 );
 

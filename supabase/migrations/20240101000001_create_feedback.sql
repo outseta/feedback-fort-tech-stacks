@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS feedback (
     description TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'requested' CHECK (status IN ('requested', 'planned', 'in_progress', 'completed', 'rejected')),
     title TEXT,
-    outseta_person_uid VARCHAR NOT NULL REFERENCES outseta_user(person_uid) DEFAULT auth.jwt() ->> 'sub',
+    outseta_person_uid VARCHAR NOT NULL DEFAULT auth.jwt() ->> 'sub',
     upvotes INTEGER DEFAULT 1, -- Start with 1 upvote for the creator
     deleted_at TIMESTAMP WITH TIME ZONE
 );
