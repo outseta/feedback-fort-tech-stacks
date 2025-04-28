@@ -83,26 +83,18 @@ const FeedbackForm = ({ className }) => {
             )}
           </button>
 
-          <button
-            // Show inactive button when user is anonymous
-            data-o-anonymous
-            type="submit"
-            className="btn btn-primary w-full"
-            disabled
-          >
-            Submit Feedback
-          </button>
+          <div className="w-full tooltip" data-tip="Login to submit feedback">
+            <button
+              // Show inactive button when user is anonymous
+              data-o-anonymous
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled
+            >
+              Submit Feedback
+            </button>
+          </div>
         </div>
-        <button
-          className="btn btn-link btn-sm font-normal opacity-80"
-          data-o-anonymous
-          data-o-auth="1"
-          data-mode="popup"
-          data-widget-mode="login"
-          type="button"
-        >
-          Log in to submit feedback
-        </button>
       </fieldset>
     </form>
   );
