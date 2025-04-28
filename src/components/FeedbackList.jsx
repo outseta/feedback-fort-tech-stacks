@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import StatusBadge, { STATUS_OPTIONS } from "./StatusBadge";
 import VoteButton from "./VoteButton";
+import FeedbackMenu from "./FeedbackMenu";
+
 import { listFeedbackWithVotes } from "../data/feedback";
 
 const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
   const [selectedStatus, setSelectedStatus] = useState("all");
+  const queryClient = useQueryClient();
 
   const {
     data: feedback,
@@ -74,6 +77,12 @@ const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
                   userVoteId={item.user_vote_id}
                 />
               </div>
+              {item.is_user_feedback && (
+                <FeedbackMenu
+                  feedbackUid={item.uid}
+                  className="absolute top-1 right-1"
+                />
+              )}
             </div>
           </div>
         ))}

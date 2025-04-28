@@ -49,7 +49,7 @@ CREATE POLICY "Users can update their own votes"
 CREATE UNIQUE INDEX unique_active_user_vote ON vote (feedback_uid, outseta_person_uid) WHERE deleted_at IS NULL;
 
 -- Create a view to show feedback with calculated upvotes and the current user's vote id
-CREATE OR REPLACE VIEW feedback_with_votes AS
+CREATE OR REPLACE VIEW active_feedback_with_votes AS
 SELECT
   f.*,
   (
@@ -64,5 +64,7 @@ SELECT
       AND v.outseta_person_uid = auth.jwt() ->> 'sub'
       AND v.deleted_at IS NULL
     LIMIT 1
-  ) AS user_vote_id
-FROM feedback f;
+  ) AS user_vote_id,
+  (f.outseta_person_uid = auth.jwt() ->> 'sub') AS is_user_feedback
+FROM feedback f
+WHERE f.deleted_at IS NULL;
