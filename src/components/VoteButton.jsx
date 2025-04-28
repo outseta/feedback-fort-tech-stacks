@@ -25,20 +25,31 @@ const VoteButton = ({ feedbackUid, upvotes, userVoteId }) => {
 
   return (
     <>
-      <button
-        onClick={(event) => {
-          event.preventDefault();
-          vote();
-        }}
-        disabled={isPending}
-        className={clsx("btn btn-sm gap-2 rounded-full", {
-          "btn-soft": userVoteId,
-          "btn-ghost": !userVoteId,
-        })}
+      <div className="tooltip" data-tip={userVoteId ? "Remove vote" : "Vote"}>
+        <button
+          onClick={(event) => {
+            event.preventDefault();
+            vote();
+          }}
+          disabled={isPending}
+          className={clsx("btn btn-sm gap-2 rounded-full", {
+            "btn-soft": userVoteId,
+            "btn-ghost": !userVoteId,
+          })}
+          data-o-authenticated
+        >
+          <span className="text-lg">👍</span>
+          <span>{upvotes}</span>
+        </button>
+      </div>
+      <div
+        className="flex gap-2 items-center tooltip"
+        data-tip="Login to vote"
+        data-o-anonymous
       >
         <span className="text-lg">👍</span>
-        <span>{upvotes}</span>
-      </button>
+        <span className="text-xs font-semibold">{upvotes}</span>
+      </div>
     </>
   );
 };
