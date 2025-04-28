@@ -4,7 +4,7 @@ import LogOut from "../assets/logout.svg?react";
 
 const AccountDropdown = (props) => {
   return (
-    <details className="dropdown" {...props}>
+    <details className="dropdown dropdown-end" {...props}>
       <summary className="btn m-1">
         <div className="avatar w-8">
           <div className="relative h-full w-full rounded">
