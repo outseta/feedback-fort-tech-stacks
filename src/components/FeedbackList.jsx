@@ -79,7 +79,7 @@ const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
               </div>
               {item.is_user_feedback && (
                 <FeedbackMenu
-                  feedbackUid={item.uid}
+                  feedback={item}
                   className="absolute top-1 right-1"
                 />
               )}

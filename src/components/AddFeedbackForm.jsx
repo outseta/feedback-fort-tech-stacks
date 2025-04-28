@@ -3,20 +3,20 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFeedback } from "../data/feedback";
 import { addVote } from "../data/vote";
 
-const FeedbackForm = ({ className }) => {
+const AddFeedbackForm = ({ className }) => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (newFeedback) => {
-      const feedback = await createFeedback(newFeedback);
-      await addVote(feedback.uid);
-      return feedback;
+    mutationFn: async (formData) => {
+      const newFeedback = await createFeedback(formData);
+      await addVote(newFeedback.uid);
+      return newFeedback;
     },
-    onSuccess: (props) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["feedback"] });
     },
     onError: (error) => {
-      console.error("error", error);
+      console.error("Error:", error);
     },
   });
 
@@ -40,13 +40,13 @@ const FeedbackForm = ({ className }) => {
     <form onSubmit={handleSubmit} className={className}>
       <fieldset
         disabled={isPending}
-        className="fieldset border-base-300 rounded-box border border-2 p-6"
+        className="fieldset rounded-box p-6 border border-2 border-base-300 space-y-4"
       >
-        <legend className="fieldset-legend text-lg font-semibold border-base-300 px-3">
+        <legend className="fieldset-legend text-lg px-3">
           Submit Your Feedback
         </legend>
-        <div className="form-control">
-          <label className="label py-2">
+        <div className="space-y-2">
+          <label className="label">
             <span className="label-text">Title</span>
           </label>
           <input
@@ -57,8 +57,8 @@ const FeedbackForm = ({ className }) => {
             required
           />
         </div>
-        <div className="form-control mt-4">
-          <label className="label py-2">
+        <div className="space-y-2">
+          <label className="label">
             <span className="label-text">Description</span>
           </label>
           <textarea
@@ -68,36 +68,33 @@ const FeedbackForm = ({ className }) => {
             required
           />
         </div>
-        <div className="form-control mt-6">
+
+        <button
+          data-o-authenticated
+          type="submit"
+          className="btn btn-primary w-full"
+          disabled={isPending}
+        >
+          {isPending ? (
+            <span className="loading loading-spinner loading-sm"></span>
+          ) : (
+            "Submit Feedback"
+          )}
+        </button>
+
+        <div className="w-full tooltip" data-tip="Login to submit feedback">
           <button
-            // Only show active button when user is authenticated
-            data-o-authenticated
+            data-o-anonymous
             type="submit"
             className="btn btn-primary w-full"
-            disabled={isPending}
+            disabled
           >
-            {isPending ? (
-              <span className="loading loading-spinner loading-sm"></span>
-            ) : (
-              "Submit Feedback"
-            )}
+            Submit Feedback
           </button>
-
-          <div className="w-full tooltip" data-tip="Login to submit feedback">
-            <button
-              // Show inactive button when user is anonymous
-              data-o-anonymous
-              type="submit"
-              className="btn btn-primary w-full"
-              disabled
-            >
-              Submit Feedback
-            </button>
-          </div>
         </div>
       </fieldset>
     </form>
   );
 };
 
-export default FeedbackForm;
+export default AddFeedbackForm;

@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FeedbackList from "./components/FeedbackList";
-import FeedbackForm from "./components/FeedbackForm";
+import AddFeedbackForm from "./components/AddFeedbackForm";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <FeedbackList className="max-w-5xl mx-auto" />
         </section>
         <section className="bg-base-200 sm:py-12 py-16 px-4">
-          <FeedbackForm className="max-w-3xl mx-auto" />
+          <AddFeedbackForm className="max-w-3xl mx-auto" />
         </section>
       </main>
       <Footer className="bg-base-300 text-base-content p-10" />

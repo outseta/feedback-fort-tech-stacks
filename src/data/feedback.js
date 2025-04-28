@@ -33,3 +33,15 @@ export const deleteFeedback = async (feedbackUid) => {
   if (error) throw error;
   return data;
 };
+
+export const updateFeedback = async (feedbackUid, updates) => {
+  const { data, error } = await supabase
+    .from("feedback")
+    .update(updates)
+    .eq("uid", feedbackUid)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};

@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import KebabMenu from "../assets/kebabmenu.svg?react";
 import { deleteFeedback } from "../data/feedback";
 
-const FeedbackMenu = ({ feedbackUid, className }) => {
+import EditFeedbackForm from "./EditFeedbackForm";
+
+const FeedbackMenu = ({ feedback, className }) => {
+  const [isEditing, setIsEditing] = useState(false);
   const queryClient = useQueryClient();
 
   const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
@@ -18,11 +21,28 @@ const FeedbackMenu = ({ feedbackUid, className }) => {
     },
   });
 
-  const handleDelete = () => {
+  const handleDelete = (feedbackUid) => {
     if (window.confirm("Are you sure you want to delete this feedback?")) {
       deleteMutate(feedbackUid);
     }
   };
+
+  if (isEditing) {
+    return (
+      <div className="modal modal-open">
+        <div className="modal-box">
+          <EditFeedbackForm
+            feedback={feedback}
+            onClose={() => setIsEditing(false)}
+          />
+        </div>
+        <div
+          className="modal-backdrop"
+          onClick={() => setIsEditing(false)}
+        ></div>
+      </div>
+    );
+  }
 
   return (
     <div className={clsx("dropdown dropdown-end", className)}>
@@ -38,8 +58,11 @@ const FeedbackMenu = ({ feedbackUid, className }) => {
         className="dropdown-content menu shadow bg-base-100 rounded-box w-52"
       >
         <li>
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+        </li>
+        <li>
           <button
-            onClick={handleDelete}
+            onClick={() => handleDelete(feedback.uid)}
             disabled={isDeleting}
             className="text-error"
           >
