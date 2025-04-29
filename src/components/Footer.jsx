@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-const NEWSLETTER_ID = import.meta.env.VITE_OUTSETA_NEWSLETTER_ID;
+const NEWSLETTER_UID = import.meta.env.VITE_OUTSETA_NEWSLETTER_UID;
 
 const Footer = ({ className }) => {
   return (
@@ -36,14 +36,16 @@ const Footer = ({ className }) => {
           <span className="font-bold">DaisyUI:</span> Tailwind CSS Components
         </a>
       </nav>
-      <span
-        className="link link-hover block"
-        data-o-email-list="1"
-        data-mode="popup"
-        data-email-list-uid={NEWSLETTER_UID}
-      >
-        Subscribe to the Feedback Fort Newsletter
-      </span>
+      {NEWSLETTER_UID && (
+        <span
+          className="link link-hover block"
+          data-o-email-list="1"
+          data-mode="popup"
+          data-email-list-uid={NEWSLETTER_UID}
+        >
+          Subscribe to the Feedback Fort Newsletter
+        </span>
+      )}
     </div>
   );
 };
