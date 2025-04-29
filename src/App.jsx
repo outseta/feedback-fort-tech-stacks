@@ -24,7 +24,32 @@ function App() {
             <p className="text-lg text-base-content/80 text-balance">
               Your feedback directly influences our decisions.
             </p>
+            <p className="text-sm text-base-content/50 text-balance">
+              This is an Outseta starter you can use as a starting point for
+              your own feedback collection system or use it as a starting point
+              for your own project.
+            </p>
+            <menu className="space-x-2">
+              <a
+                href="https://github.com/outseta/outseta-supabase-react-feedback-fort"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-sm btn-outline"
+              >
+                Code on GitHub
+              </a>
+              <a
+                href="https://go.outseta.com/support/kb/categories/d1QpjYWE/developer-docs"
+                target="_blank"
+                disabled
+                rel="noopener noreferrer"
+                className="btn btn-sm btn-outline"
+              >
+                Tutorial coming soon
+              </a>
+            </menu>
           </div>
+
           <div className="">
             <ArrowDownIcon className="w-6 h-6 mx-auto text-primary" />
           </div>
