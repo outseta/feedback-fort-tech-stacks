@@ -4,7 +4,8 @@ import Footer from "./components/Footer";
 import FeedbackList from "./components/FeedbackList";
 import AddFeedbackForm from "./components/AddFeedbackForm";
 
-import LightbulbIcon from "./assets/lighbulb.svg?react";
+import TowerIcon from "./assets/icons8-tower.svg?react";
+import LightbulbIcon from "./assets/lightbulb.svg?react";
 import ArrowDownIcon from "./assets/arrow-down.svg?react";
 
 function App() {
@@ -16,15 +17,12 @@ function App() {
       <main>
         <section className="py-16 md:py-24 px-4 bg-base-100 space-y-16">
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-1.5 rounded-full text-sm text-primary">
-              <span className="w-2 h-2 rounded-full bg-primary inline-block"></span>
-              The future of our product
-            </div>
+            <TowerIcon className="w-12 h-12 mx-auto text-primary" />
             <h1 className="text-4xl md:text-5xl font-bold">
               Help shape what's coming next
             </h1>
             <p className="text-lg text-base-content/80 text-balance">
-              Your feedback directly influences our development decisions.
+              Your feedback directly influences our decisions.
             </p>
           </div>
           <div className="">
