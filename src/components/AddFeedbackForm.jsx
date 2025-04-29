@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFeedback } from "../data/feedback";
 import { addVote } from "../data/vote";
@@ -37,14 +38,12 @@ const AddFeedbackForm = ({ className }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={className}>
-      <fieldset
-        disabled={isPending}
-        className="fieldset rounded-box p-6 border border-2 border-base-300 space-y-4"
-      >
-        <legend className="fieldset-legend text-lg px-3">
-          Submit Your Feedback
-        </legend>
+    <form
+      onSubmit={handleSubmit}
+      className={clsx("card bg-base-100 shadow-lg", className)}
+    >
+      <fieldset disabled={isPending} className="card-body space-y-4">
+        <legend className="sr-only">Submit Your Feedback</legend>
         <div className="space-y-2">
           <label className="label">
             <span className="label-text">Title</span>
@@ -72,7 +71,7 @@ const AddFeedbackForm = ({ className }) => {
         <button
           data-o-authenticated
           type="submit"
-          className="btn btn-primary w-full"
+          className="btn btn-primary w-full mb-0"
           disabled={isPending}
         >
           {isPending ? (
@@ -82,13 +81,12 @@ const AddFeedbackForm = ({ className }) => {
           )}
         </button>
 
-        <div className="w-full tooltip" data-tip="Login to submit feedback">
-          <button
-            data-o-anonymous
-            type="submit"
-            className="btn btn-primary w-full"
-            disabled
-          >
+        <div
+          className="w-full tooltip mb-0"
+          data-tip="Login to submit feedback"
+          data-o-anonymous
+        >
+          <button type="submit" className="btn btn-primary w-full" disabled>
             Submit Feedback
           </button>
         </div>
