@@ -40,7 +40,7 @@ const Footer = ({ className }) => {
         className="link link-hover block"
         data-o-email-list="1"
         data-mode="popup"
-        data-email-list-uid={NEWSLETTER_ID}
+        data-email-list-uid={NEWSLETTER_UID}
       >
         Subscribe to the Feedback Fort Newsletter
       </span>
