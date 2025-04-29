@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <header className="bg-base-200">
-        <Navbar className="max-w-5xl mx-auto" />
+        <Navbar className="max-w-7xl mx-auto" />
       </header>
       <main>
         <section className="py-16 md:py-24 px-4 bg-base-100 space-y-16">
