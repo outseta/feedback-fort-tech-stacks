@@ -3,17 +3,37 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FeedbackList from "./components/FeedbackList";
 import AddFeedbackForm from "./components/AddFeedbackForm";
+
 import LightbulbIcon from "./assets/lighbulb.svg?react";
+import ArrowDownIcon from "./assets/arrow-down.svg?react";
+
 function App() {
   return (
     <>
-      <header className="bg-base-200 shadow-sm">
+      <header className="bg-base-200">
         <Navbar className="max-w-5xl mx-auto" />
       </header>
       <main>
-        <section className="py-16 px-4">
+        <section className="py-16 md:py-24 px-4 bg-base-100 space-y-16">
+          <div className="max-w-3xl mx-auto text-center space-y-6">
+            <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-1.5 rounded-full text-sm text-primary">
+              <span className="w-2 h-2 rounded-full bg-primary inline-block"></span>
+              The future of our product
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold">
+              Help shape what's coming next
+            </h1>
+            <p className="text-lg text-base-content/80 text-balance">
+              Your feedback directly influences our development decisions.
+            </p>
+          </div>
+          <div className="">
+            <ArrowDownIcon className="w-6 h-6 mx-auto text-primary" />
+          </div>
+
           <FeedbackList className="max-w-5xl mx-auto" />
         </section>
+
         <section className="bg-primary-content py-12 md:py-24 px-4 space-y-8">
           <div className="max-w-2xl mx-auto text-center">
             <div className="w-16 h-16 bg-primary/10 rounded-full mx-auto mb-6 flex items-center justify-center">
