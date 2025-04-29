@@ -4,6 +4,8 @@ import AccountDropdown from "./AccountDropdown";
 import SignupIcon from "../assets/signup.svg?react";
 import LoginIcon from "../assets/login.svg?react";
 
+const PRESELECTED_PLAN_UID = import.meta.env.VITE_OUTSETA_PRESELECTED_PLAN_UID;
+
 const Navbar = ({ className }) => {
   return (
     <nav className={clsx("navbar gap-2 items-center", className)}>
@@ -33,6 +35,8 @@ const Navbar = ({ className }) => {
         data-o-auth="1"
         data-mode="popup"
         data-widget-mode="register"
+        data-plan-uid={PRESELECTED_PLAN_UID}
+        data-skip-plan-options="true"
       >
         <SignupIcon className="size-5" />
         Sign Up
