@@ -15,27 +15,28 @@ const Navbar = ({ className }) => {
         </span>
       </a>
 
-      {/* Anonymous buttons - only shown when logged out */}
       <button
         className="btn btn-ghost"
-        data-o-anonymous
-        data-o-auth="1"
-        data-mode="popup"
-        data-widget-mode="register"
-      >
-        Sign Up
-      </button>
-      <button
-        className="btn btn-ghost"
-        data-o-anonymous
+        data-o-anonymous // Anonymous buttons - only shown when logged out
         data-o-auth="1"
         data-mode="popup"
         data-widget-mode="login"
       >
         Log In
       </button>
+      <button
+        className="btn btn-ghost"
+        data-o-anonymous // Anonymous buttons - only shown when logged out
+        data-o-auth="1"
+        data-mode="popup"
+        data-widget-mode="register"
+      >
+        Sign Up
+      </button>
 
-      <AccountDropdown data-o-authenticated />
+      <AccountDropdown
+        data-o-authenticated // Account dropdown - only shown when logged in
+      />
     </nav>
   );
 };

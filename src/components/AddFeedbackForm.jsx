@@ -69,7 +69,7 @@ const AddFeedbackForm = ({ className }) => {
         </div>
 
         <button
-          data-o-authenticated
+          data-o-authenticated // Submit feedback button - only shown when logged in
           type="submit"
           className="btn btn-primary w-full mb-0"
           disabled={isPending}
@@ -84,7 +84,7 @@ const AddFeedbackForm = ({ className }) => {
         <div
           className="w-full tooltip mb-0"
           data-tip="Login to submit feedback"
-          data-o-anonymous
+          data-o-anonymous // Submit feedback disabled button with tooltip - only shown when logged out
         >
           <button type="submit" className="btn btn-primary w-full" disabled>
             Submit Feedback

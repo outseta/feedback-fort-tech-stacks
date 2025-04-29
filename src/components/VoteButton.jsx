@@ -36,7 +36,7 @@ const VoteButton = ({ feedbackUid, upvotes, userVoteId }) => {
             "btn-soft": userVoteId,
             "btn-ghost": !userVoteId,
           })}
-          data-o-authenticated
+          data-o-authenticated // Vote button - only shown when logged in
         >
           <span className="text-lg">👍</span>
           <span>{upvotes}</span>
@@ -45,7 +45,7 @@ const VoteButton = ({ feedbackUid, upvotes, userVoteId }) => {
       <div
         className="flex gap-2 items-center tooltip"
         data-tip="Login to vote"
-        data-o-anonymous
+        data-o-anonymous // Vote summary - only shown when logged out
       >
         <span className="text-lg">👍</span>
         <span className="text-xs font-semibold">{upvotes}</span>
