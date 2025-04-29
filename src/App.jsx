@@ -55,7 +55,9 @@ function App() {
           <AddFeedbackForm className="max-w-3xl mx-auto" />
         </section>
       </main>
-      <Footer className="bg-base-300 text-base-content p-10" />
+      <footer className="px-4 py-10 bg-neutral text-neutral-content">
+        <Footer className="max-w-7xl mx-auto" />
+      </footer>
     </>
   );
 }
