@@ -49,7 +49,7 @@ function App() {
               data-mode="popup"
               data-widget-mode="login"
             >
-              Please log in to submit a feature request.
+              Please log in to submit feedback.
             </button>
           </div>
           <AddFeedbackForm className="max-w-3xl mx-auto" />
