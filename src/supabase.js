@@ -5,7 +5,12 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   accessToken: async (token) => {
-    const outsetaAccessToken = window.Outseta.getAccessToken();
+    // On redirect, the access token is passed in the URL
+    const url = new URL(window.location.href);
+    const outsetaAccessParam = url.searchParams.get("access_token");
+    // After redirect, the access token is available getAccessToken()
+    const outsetaAccessToken =
+      window.Outseta.getAccessToken() || outsetaAccessParam;
     const supabaseAccessToken = await exchangeToken(outsetaAccessToken);
     return supabaseAccessToken || token;
   },
