@@ -15,8 +15,8 @@ ALTER TABLE feedback ENABLE ROW LEVEL SECURITY;
 -- Drop existing policies if they exist
 DROP POLICY IF EXISTS "Anyone can view all feedback" ON feedback;
 DROP POLICY IF EXISTS "Users can create feedback" ON feedback;
-DROP POLICY IF EXISTS "Users can update their own feedback" ON feedback;
-DROP POLICY IF EXISTS "Users can delete their own feedback" ON feedback;
+DROP POLICY IF EXISTS "Users can update their feedback" ON feedback;
+DROP POLICY IF EXISTS "Users can delete their feedback" ON feedback;
 
 -- Create policies
 CREATE POLICY "Anyone can view all feedback"
@@ -27,12 +27,12 @@ CREATE POLICY "Users can create feedback"
     ON feedback FOR INSERT
     WITH CHECK (auth.jwt() ->> 'sub' = outseta_person_uid);
 
-CREATE POLICY "Users can update their own feedback"
+CREATE POLICY "Users can update their feedback"
     ON feedback FOR UPDATE
     USING (auth.jwt() ->> 'sub' = outseta_person_uid)
     WITH CHECK (auth.jwt() ->> 'sub' = outseta_person_uid);
 
 -- Only allow soft deletes of feedback, so no delete policy
--- CREATE POLICY "Users can delete their own feedback"
+-- CREATE POLICY "Users can delete their feedback"
 --     ON feedback FOR DELETE
 --     USING (auth.jwt() ->> 'sub' = outseta_person_uid);
