@@ -1,4 +1,4 @@
-import { supabase } from "../supabase";
+import { supabase } from "./client";
 
 export const createFeedback = async (newFeedback) => {
   const { data, error } = await supabase

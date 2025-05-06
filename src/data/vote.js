@@ -1,4 +1,4 @@
-import { supabase } from "../supabase";
+import { supabase } from "./client";
 
 export const addVote = async (feedbackUid) => {
   const { data, error } = await supabase
