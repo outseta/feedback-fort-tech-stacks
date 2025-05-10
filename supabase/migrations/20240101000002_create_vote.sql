@@ -11,14 +11,18 @@ CREATE TABLE IF NOT EXISTS vote (
 ALTER TABLE vote ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies if they exist
-DROP POLICY IF EXISTS "Users can view their votes" ON vote;
+DROP POLICY IF EXISTS "View active votes and all their votes" ON vote;
 DROP POLICY IF EXISTS "Users can create votes" ON vote;
 DROP POLICY IF EXISTS "Users can update their votes" ON vote;
 
 -- Create policies
-CREATE POLICY "Users can view their votes"
+CREATE POLICY "View active votes and all their votes"
   ON vote FOR SELECT
-  USING (true);
+  USING (
+    deleted_at IS NULL
+    OR
+    auth.jwt() ->> 'sub' = outseta_person_uid
+  );
 
 CREATE POLICY "Users can create votes"
     ON vote FOR INSERT
