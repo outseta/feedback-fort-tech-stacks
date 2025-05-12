@@ -22,9 +22,12 @@ function App() {
               What tech stack should we use next?
             </h1>
             <p className="text-lg text-base-content/80 text-balance">
-              We are on a mission to show Outseta used with all the stacks by
-              rebuilding{" "}
-              <a href="https://go.outseta.com/support/kb/categories/496v2l9X/demo-app-feedback-fort">
+              We are on a mission to show Outseta integrated with all the stacks
+              by rebuilding{" "}
+              <a
+                className="underline hoved:no-underline"
+                href="https://go.outseta.com/support/kb/categories/496v2l9X/demo-app-feedback-fort"
+              >
                 Feedback Fort
               </a>
               . Suggest your favorite tech stack or upvote existing ones!
