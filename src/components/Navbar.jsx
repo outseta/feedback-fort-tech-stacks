@@ -9,14 +9,8 @@ const PRESELECTED_PLAN_UID = import.meta.env.VITE_OUTSETA_PRESELECTED_PLAN_UID;
 const Navbar = ({ className }) => {
   return (
     <nav className={clsx("navbar gap-2 items-center", className)}>
-      <a
-        href="/"
-        className="btn btn-lg btn-ghost flex flex-col mr-auto px-0 group"
-      >
-        <span className="z-10">Feedback Fort</span>
-        <span className="badge badge-sm badge-soft badge-secondary -mt-4 group-hover:bg-transparent group-hover:border-transparent transition-all">
-          Outseta + React + Supabase
-        </span>
+      <a href="/" className="btn btn-lg btn-ghost mr-auto px-4">
+        <span className="z-10">Feedback Fort Tech Stacks</span>
       </a>
 
       <button

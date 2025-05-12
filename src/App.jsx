@@ -19,35 +19,16 @@ function App() {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <TowerIcon className="w-12 h-12 mx-auto text-primary" />
             <h1 className="text-4xl md:text-5xl font-bold">
-              Help shape what's coming next
+              What tech stack should we use next?
             </h1>
             <p className="text-lg text-base-content/80 text-balance">
-              Your feedback directly influences our decisions.
-            </p>
-            <p className="text-sm text-base-content/50 text-balance">
-              This is an Outseta starter you can use as a starting point for
-              your own feedback collection system or use it as a starting point
-              for your own project.
-            </p>
-            <menu className="space-x-2">
-              <a
-                href="https://github.com/outseta/outseta-supabase-react-feedback-fort"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-sm btn-outline"
-              >
-                Code on GitHub
+              We are on a mission to show Outseta used with all the stacks by
+              rebuilding{" "}
+              <a href="https://go.outseta.com/support/kb/categories/496v2l9X/demo-app-feedback-fort">
+                Feedback Fort
               </a>
-              <a
-                href="https://go.outseta.com/support/kb/categories/d1QpjYWE/developer-docs"
-                target="_blank"
-                disabled
-                rel="noopener noreferrer"
-                className="btn btn-sm btn-outline"
-              >
-                Tutorial coming soon
-              </a>
-            </menu>
+              . Suggest your favorite tech stack or upvote existing ones!
+            </p>
           </div>
 
           <div className="">
