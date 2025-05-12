@@ -49,7 +49,6 @@ const EditFeedbackForm = ({ feedback, onClose, className }) => {
             placeholder="Describe your feedback in detail"
             name="description"
             defaultValue={feedback.description}
-            required
           />
         </div>
         <div className="flex justify-end gap-2">

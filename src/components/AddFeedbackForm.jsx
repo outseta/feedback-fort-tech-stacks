@@ -64,7 +64,6 @@ const AddFeedbackForm = ({ className }) => {
             className="textarea textarea-bordered h-24 w-full"
             placeholder="Describe your feedback in detail"
             name="description"
-            required
           />
         </div>
 

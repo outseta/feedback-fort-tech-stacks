@@ -10,7 +10,7 @@ const Navbar = ({ className }) => {
   return (
     <nav className={clsx("navbar gap-2 items-center", className)}>
       <a href="/" className="btn btn-lg btn-ghost mr-auto px-4">
-        <span className="z-10">Feedback Fort Tech Stacks</span>
+        <span className="z-10">FF Tech Stacks</span>
       </a>
 
       <button

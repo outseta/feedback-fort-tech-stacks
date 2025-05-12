@@ -18,7 +18,7 @@ function App() {
         <section className="py-16 md:py-24 px-4 bg-base-100 space-y-16">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <TowerIcon className="w-12 h-12 mx-auto text-primary" />
-            <h1 className="text-4xl md:text-5xl font-bold">
+            <h1 className="text-4xl md:text-5xl font-bold text-balance">
               What tech stack should we use next?
             </h1>
             <p className="text-lg text-base-content/80 text-balance">
