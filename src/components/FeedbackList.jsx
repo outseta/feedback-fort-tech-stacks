@@ -9,7 +9,7 @@ import { listFeedbackWithMetadata } from "../data/feedback";
 
 const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
   const [selectedStatus, setSelectedStatus] = useState("all");
-  const [modalFeedback, setModalFeedback] = useState(null);
+  const [modalFeedbackId, setModalFeedbackId] = useState(null);
 
   const {
     data: feedback,
@@ -74,7 +74,7 @@ const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
                 />
                 <button
                   className="btn btn-ghost btn-sm gap-2 ml-auto rounded-full"
-                  onClick={() => setModalFeedback(item)}
+                  onClick={() => setModalFeedbackId(item.uid)}
                 >
                   <span className="text-lg">💬</span>
                   <span>{item.comment_count}</span>
@@ -98,9 +98,9 @@ const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
         ))}
       </div>
       <FeedbackModal
-        feedback={modalFeedback}
-        open={!!modalFeedback}
-        onClose={() => setModalFeedback(null)}
+        feedback={feedback?.find((item) => item.uid === modalFeedbackId)}
+        open={!!modalFeedbackId}
+        onClose={() => setModalFeedbackId(null)}
       />
     </div>
   );
