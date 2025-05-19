@@ -15,6 +15,7 @@ const Comment = ({ comment }) => {
       queryClient.invalidateQueries({
         queryKey: ["comments", comment.feedback_uid],
       });
+      queryClient.invalidateQueries({ queryKey: ["feedback"] });
     },
   });
 

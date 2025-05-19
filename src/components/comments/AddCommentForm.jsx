@@ -10,6 +10,7 @@ const AddCommentForm = ({ feedbackUid }) => {
     mutationFn: () => createComment(feedbackUid, content),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", feedbackUid] });
+      queryClient.invalidateQueries({ queryKey: ["feedback"] });
       setContent("");
     },
   });
