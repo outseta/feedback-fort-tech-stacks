@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { listComments } from "../../data/comments";
 import Comment from "./Comment";
-import CommentForm from "./CommentForm";
+import AddCommentForm from "./AddCommentForm";
 
 const CommentList = ({ feedbackUid }) => {
   const {
@@ -29,7 +29,7 @@ const CommentList = ({ feedbackUid }) => {
 
   return (
     <div className="space-y-4">
-      <CommentForm feedbackUid={feedbackUid} />
+      <AddCommentForm feedbackUid={feedbackUid} />
       <div className="space-y-4">
         {comments?.map((comment) => (
           <Comment key={comment.uid} comment={comment} />

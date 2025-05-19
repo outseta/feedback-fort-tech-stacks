@@ -1,23 +1,13 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateComment, deleteComment } from "../../data/comments";
+import { deleteComment } from "../../data/comments";
 import { useUser } from "../../data/user";
+import EditCommentForm from "./EditCommentForm";
 
 const Comment = ({ comment }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editContent, setEditContent] = useState(comment.content);
   const queryClient = useQueryClient();
   const { data: user } = useUser();
-
-  const { mutate: updateMutate, isPending: isUpdating } = useMutation({
-    mutationFn: () => updateComment(comment.uid, editContent),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["comments", comment.feedback_uid],
-      });
-      setIsEditing(false);
-    },
-  });
 
   const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
     mutationFn: () => deleteComment(comment.uid),
@@ -27,11 +17,6 @@ const Comment = ({ comment }) => {
       });
     },
   });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    updateMutate();
-  };
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this comment?")) {
@@ -43,35 +28,7 @@ const Comment = ({ comment }) => {
 
   if (isEditing) {
     return (
-      <form onSubmit={handleSubmit} className="space-y-2">
-        <textarea
-          className="textarea textarea-bordered w-full"
-          value={editContent}
-          onChange={(e) => setEditContent(e.target.value)}
-          disabled={isUpdating}
-        />
-        <div className="flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={() => setIsEditing(false)}
-            className="btn btn-ghost btn-sm"
-            disabled={isUpdating}
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="btn btn-primary btn-sm"
-            disabled={isUpdating}
-          >
-            {isUpdating ? (
-              <span className="loading loading-spinner loading-sm"></span>
-            ) : (
-              "Save"
-            )}
-          </button>
-        </div>
-      </form>
+      <EditCommentForm comment={comment} onCancel={() => setIsEditing(false)} />
     );
   }
 
