@@ -12,10 +12,19 @@ CREATE TABLE IF NOT EXISTS comments (
 -- Enable RLS
 ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Anyone can view comments" ON comments;
+DROP POLICY IF EXISTS "Users can create comments" ON comments;
+DROP POLICY IF EXISTS "Users can update their comments" ON comments;
+
 -- Create policies
 CREATE POLICY "Anyone can view comments"
     ON comments FOR SELECT
-    USING (deleted_at IS NULL);
+    USING (
+        deleted_at IS NULL
+        OR
+        auth.jwt() ->> 'sub' = outseta_person_uid
+    );
 
 CREATE POLICY "Users can create comments"
     ON comments FOR INSERT
