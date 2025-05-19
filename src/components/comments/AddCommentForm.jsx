@@ -3,49 +3,64 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createComment } from "../../data/comments";
 
 const AddCommentForm = ({ feedbackUid }) => {
-  const [content, setContent] = useState("");
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => createComment(feedbackUid, content),
+    mutationFn: ({ content }) => createComment(feedbackUid, content),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", feedbackUid] });
       queryClient.invalidateQueries({ queryKey: ["feedback"] });
-      setContent("");
+    },
+    onError: (error) => {
+      console.error("Error:", error);
     },
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (content.trim()) {
-      mutate();
-    }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    mutate(
+      {
+        content: formData.get("content"),
+      },
+      {
+        onSuccess: () => {
+          event.target.reset();
+        },
+        onError: (error) => {
+          const content = event.target.content.value.trim();
+          event.target.content.value = content;
+        },
+      }
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
-      <textarea
-        className="textarea textarea-bordered w-full"
-        placeholder="Write a comment..."
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        disabled={isPending}
-        data-o-authenticated
-      />
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          className="btn btn-primary btn-sm"
-          disabled={isPending || !content.trim()}
+    <form onSubmit={handleSubmit}>
+      <fieldset disabled={isPending} className="space-y-2">
+        <textarea
+          className="textarea textarea-bordered w-full"
+          placeholder="Write a comment..."
+          name="content"
+          disabled={isPending}
           data-o-authenticated
-        >
-          {isPending ? (
-            <span className="loading loading-spinner loading-sm"></span>
-          ) : (
-            "Post Comment"
-          )}
-        </button>
-      </div>
+          required
+        />
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="btn btn-primary btn-sm"
+            disabled={isPending}
+            data-o-authenticated
+          >
+            {isPending ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              "Post Comment"
+            )}
+          </button>
+        </div>
+      </fieldset>
       <div
         className="tooltip w-full"
         data-tip="Login to comment"
