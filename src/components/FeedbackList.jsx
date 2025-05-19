@@ -5,7 +5,7 @@ import VoteButton from "./VoteButton";
 import FeedbackMenu from "./FeedbackMenu";
 import FeedbackModal from "./FeedbackModal";
 
-import { listFeedbackWithVotes } from "../data/feedback";
+import { listFeedbackWithMetadata } from "../data/feedback";
 
 const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
   const [selectedStatus, setSelectedStatus] = useState("all");
@@ -18,7 +18,7 @@ const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
     error,
   } = useQuery({
     queryKey: ["feedback"],
-    queryFn: listFeedbackWithVotes,
+    queryFn: listFeedbackWithMetadata,
     onError: (error) => {
       console.error(error);
     },

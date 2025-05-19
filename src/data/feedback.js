@@ -12,7 +12,7 @@ export const createFeedback = async (newFeedback) => {
   return data;
 };
 
-export const listFeedbackWithVotes = async () => {
+export const listFeedbackWithMetadata = async () => {
   const { data, error } = await supabase
     .from("active_feedback_with_metadata")
     .select()
