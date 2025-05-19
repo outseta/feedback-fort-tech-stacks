@@ -1,0 +1,53 @@
+-- Create comments table
+CREATE TABLE IF NOT EXISTS comments (
+    uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    content TEXT NOT NULL,
+    feedback_uid UUID NOT NULL REFERENCES feedback(uid),
+    outseta_person_uid VARCHAR NOT NULL DEFAULT auth.jwt() ->> 'sub',
+    deleted_at TIMESTAMP WITH TIME ZONE
+);
+
+-- Enable RLS
+ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
+
+-- Create policies
+CREATE POLICY "Anyone can view comments"
+    ON comments FOR SELECT
+    USING (deleted_at IS NULL);
+
+CREATE POLICY "Users can create comments"
+    ON comments FOR INSERT
+    WITH CHECK (auth.jwt() ->> 'sub' = outseta_person_uid);
+
+CREATE POLICY "Users can update their comments"
+    ON comments FOR UPDATE
+    USING (auth.jwt() ->> 'sub' = outseta_person_uid)
+    WITH CHECK (auth.jwt() ->> 'sub' = outseta_person_uid);
+
+-- Update the active_feedback_with_votes view to include comment count
+CREATE OR REPLACE VIEW active_feedback_with_votes AS
+SELECT
+    f.*,
+    (
+        SELECT COUNT(*)
+        FROM vote v
+        WHERE v.feedback_uid = f.uid AND v.deleted_at IS NULL
+    ) AS upvotes,
+    (
+        SELECT v.uid
+        FROM vote v
+        WHERE v.feedback_uid = f.uid
+          AND v.outseta_person_uid = auth.jwt() ->> 'sub'
+          AND v.deleted_at IS NULL
+        LIMIT 1
+    ) AS user_vote_id,
+    (f.outseta_person_uid = auth.jwt() ->> 'sub') AS is_user_feedback,
+    (
+        SELECT COUNT(*)
+        FROM comments c
+        WHERE c.feedback_uid = f.uid AND c.deleted_at IS NULL
+    ) AS comment_count
+FROM feedback f
+WHERE f.deleted_at IS NULL;

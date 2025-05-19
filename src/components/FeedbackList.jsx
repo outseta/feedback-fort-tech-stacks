@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import StatusBadge, { STATUS_OPTIONS } from "./StatusBadge";
 import VoteButton from "./VoteButton";
 import FeedbackMenu from "./FeedbackMenu";
+import FeedbackModal from "./FeedbackModal";
 
 import { listFeedbackWithVotes } from "../data/feedback";
 
 const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
   const [selectedStatus, setSelectedStatus] = useState("all");
-  const queryClient = useQueryClient();
+  const [modalFeedback, setModalFeedback] = useState(null);
 
   const {
     data: feedback,
@@ -66,17 +67,26 @@ const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
             <div className="card-body">
               <h2 className="card-title">{item.title}</h2>
               <p>{item.description}</p>
-              <div className="card-actions justify-between items-center mt-4">
+              <div className="card-actions items-center gap-0.5 mt-4">
                 <StatusBadge
                   onClick={() => setSelectedStatus(item.status)}
                   status={item.status}
                 />
+                <button
+                  className="btn btn-ghost btn-sm gap-2 ml-auto rounded-full"
+                  onClick={() => setModalFeedback(item)}
+                >
+                  <span className="text-lg">💬</span>
+                  <span>{item.comment_count}</span>
+                </button>
+
                 <VoteButton
                   feedbackUid={item.uid}
                   upvotes={item.upvotes}
                   userVoteId={item.user_vote_id}
                 />
               </div>
+
               {item.is_user_feedback && (
                 <FeedbackMenu
                   feedback={item}
@@ -87,6 +97,11 @@ const FeedbackList = ({ className, statuses = STATUS_OPTIONS }) => {
           </div>
         ))}
       </div>
+      <FeedbackModal
+        feedback={modalFeedback}
+        open={!!modalFeedback}
+        onClose={() => setModalFeedback(null)}
+      />
     </div>
   );
 };
