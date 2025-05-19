@@ -28,12 +28,14 @@ const CommentList = ({ feedbackUid }) => {
   }
 
   return (
-    <div className="space-y-4">
-      <AddCommentForm feedbackUid={feedbackUid} />
-      <div className="space-y-4">
+    <div className="flex flex-col h-full max-h-[400px]">
+      <div className="flex-1 overflow-y-auto space-y-3 px-0">
         {comments?.map((comment) => (
           <Comment key={comment.uid} comment={comment} />
         ))}
+      </div>
+      <div className="pt-2 bg-base-100 sticky bottom-0 z-10 w-full p-0">
+        <AddCommentForm feedbackUid={feedbackUid} />
       </div>
     </div>
   );

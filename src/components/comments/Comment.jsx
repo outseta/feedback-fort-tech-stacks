@@ -33,52 +33,49 @@ const Comment = ({ comment }) => {
   }
 
   return (
-    <div className="card bg-base-100 shadow-sm">
-      <div className="card-body p-4">
-        <div className="flex justify-between items-start">
-          <div className="space-y-1">
-            <p className="text-sm font-medium">
-              {comment.outseta_person?.full_name ||
-                comment.outseta_person?.email}
-            </p>
-            <p className="text-sm text-base-content/70">
-              {new Date(comment.created_at).toLocaleString()}
-            </p>
+    <div className="px-4 py-2">
+      <div className="flex items-center mt-0.5 gap-2">
+        <span className="text-xs text-base-content/40 font-normal">
+          {new Date(comment.created_at).toLocaleDateString(undefined, {
+            month: "short",
+            day: "numeric",
+          })}
+        </span>
+        {isAuthor && <div className="flex-1 h-px bg-base-content/10 mx-2" />}
+        {isAuthor && (
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setIsEditing(true)}
+              className="btn btn-xs btn-ghost min-h-0 h-5 w-5 p-0 opacity-50 hover:opacity-100 focus:opacity-100"
+              type="button"
+              aria-label="Edit comment"
+            >
+              <span role="img" aria-label="Edit">
+                ✏️
+              </span>
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="btn btn-xs btn-ghost text-error min-h-0 h-5 w-5 p-0 opacity-50 hover:opacity-100 focus:opacity-100"
+              type="button"
+              aria-label="Delete comment"
+            >
+              {isDeleting ? (
+                <span className="loading loading-spinner loading-xs"></span>
+              ) : (
+                <span role="img" aria-label="Delete">
+                  🗑️
+                </span>
+              )}
+            </button>
           </div>
-          {isAuthor && (
-            <div className="dropdown dropdown-end">
-              <button
-                tabIndex={0}
-                className="btn btn-ghost btn-xs btn-circle"
-                data-tip="More actions"
-              >
-                ⋮
-              </button>
-              <menu
-                tabIndex={0}
-                className="dropdown-content menu shadow bg-base-100 rounded-box w-52"
-              >
-                <li>
-                  <button onClick={() => setIsEditing(true)}>Edit</button>
-                </li>
-                <li>
-                  <button
-                    onClick={handleDelete}
-                    disabled={isDeleting}
-                    className="text-error"
-                  >
-                    {isDeleting ? (
-                      <span className="loading loading-spinner loading-xs"></span>
-                    ) : (
-                      "Delete"
-                    )}
-                  </button>
-                </li>
-              </menu>
-            </div>
-          )}
-        </div>
-        <p className="mt-2">{comment.content}</p>
+        )}
+      </div>
+      <div className="mt-1">
+        <p className="whitespace-pre-line text-base-content text-sm m-0 inline">
+          {comment.content}
+        </p>
       </div>
     </div>
   );

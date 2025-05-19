@@ -3,7 +3,12 @@ import clsx from "clsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addVote, deleteVote } from "../data/vote";
 
-const VoteButton = ({ feedbackUid, upvotes, userVoteId }) => {
+const VoteButton = ({
+  feedbackUid,
+  upvotes,
+  userVoteId,
+  placement = "top",
+}) => {
   const queryClient = useQueryClient();
 
   const { mutate: vote, isPending } = useMutation({
@@ -25,7 +30,15 @@ const VoteButton = ({ feedbackUid, upvotes, userVoteId }) => {
 
   return (
     <>
-      <div className="tooltip" data-tip={userVoteId ? "Remove vote" : "Vote"}>
+      <div
+        className={clsx("tooltip", {
+          "tooltip-top": placement === "top",
+          "tooltip-bottom": placement === "bottom",
+          "tooltip-left": placement === "left",
+          "tooltip-right": placement === "right",
+        })}
+        data-tip={userVoteId ? "Remove vote" : "Vote"}
+      >
         <button
           onClick={(event) => {
             event.preventDefault();
@@ -43,7 +56,12 @@ const VoteButton = ({ feedbackUid, upvotes, userVoteId }) => {
         </button>
       </div>
       <div
-        className="flex gap-2 items-center tooltip"
+        className={clsx("flex gap-2 items-center tooltip", {
+          "tooltip-top": placement === "top",
+          "tooltip-bottom": placement === "bottom",
+          "tooltip-left": placement === "left",
+          "tooltip-right": placement === "right",
+        })}
         data-tip="Login to vote"
         data-o-anonymous // Vote summary - only shown when logged out
       >

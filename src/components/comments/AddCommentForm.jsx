@@ -45,7 +45,11 @@ const AddCommentForm = ({ feedbackUid }) => {
           )}
         </button>
       </div>
-      <div className="tooltip" data-tip="Login to comment" data-o-anonymous>
+      <div
+        className="tooltip w-full"
+        data-tip="Login to comment"
+        data-o-anonymous
+      >
         <textarea
           className="textarea textarea-bordered w-full"
           placeholder="Login to write a comment..."

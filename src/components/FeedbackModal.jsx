@@ -16,7 +16,7 @@ const FeedbackModal = ({ feedback, open, onClose }) => {
       onKeyDown={(e) => e.key === "Escape" && onClose()}
     >
       <div
-        className="modal-box max-w-2xl w-full max-h-[90vh] overflow-y-auto relative"
+        className="modal-box max-w-2xl w-full max-h-[90vh] overflow-y-auto overflow-x-hidden relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -31,16 +31,16 @@ const FeedbackModal = ({ feedback, open, onClose }) => {
           <p className="mb-2">{feedback.description}</p>
           <div className="flex gap-2 items-center mb-2">
             <StatusBadge status={feedback.status} />
+            {feedback.is_user_feedback && <FeedbackMenu feedback={feedback} />}
+            <div className="flex-1" />
             <VoteButton
               feedbackUid={feedback.uid}
               upvotes={feedback.upvotes}
               userVoteId={feedback.user_vote_id}
+              placement="left"
             />
-            <span className="text-lg">💬 {feedback.comment_count}</span>
-            {feedback.is_user_feedback && <FeedbackMenu feedback={feedback} />}
           </div>
         </div>
-        <div className="divider">Comments</div>
         <CommentList feedbackUid={feedback.uid} />
       </div>
       <div className="modal-backdrop" onClick={onClose}></div>
