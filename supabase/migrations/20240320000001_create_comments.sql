@@ -9,6 +9,9 @@ CREATE TABLE IF NOT EXISTS comments (
     deleted_at TIMESTAMP WITH TIME ZONE
 );
 
+-- Add check constraint to ensure content is not empty or just whitespace
+ALTER TABLE comments ADD CONSTRAINT comments_content_not_empty CHECK (trim(content) <> '');
+
 -- Enable RLS
 ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
 
