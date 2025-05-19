@@ -16,7 +16,6 @@ ALTER TABLE feedback ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Anyone can view all feedback" ON feedback;
 DROP POLICY IF EXISTS "Users can create feedback" ON feedback;
 DROP POLICY IF EXISTS "Users can update their feedback" ON feedback;
-DROP POLICY IF EXISTS "Users can delete their feedback" ON feedback;
 
 -- Create policies
 CREATE POLICY "Anyone can view all feedback"

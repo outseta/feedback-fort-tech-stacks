@@ -14,7 +14,7 @@ export const createFeedback = async (newFeedback) => {
 
 export const listFeedbackWithVotes = async () => {
   const { data, error } = await supabase
-    .from("active_feedback_with_votes")
+    .from("active_feedback_with_metadata")
     .select()
     .order("created_at", { ascending: true });
 
